@@ -7,11 +7,11 @@ import UserList from "./Components/User/UserList";
 function App() {
   const [usersList, setUserList] = useState([]);
 
-  const addUserHandler = (uNmae, uAge) => {
-    //its takes the 'console.log(enteringNAme, enteringAge);'
+  const addUserHandler = (uNmae, uAge, uCollege) => {
+    //its takes the 'console.log(enteredName, enteredAge);'
     setUserList((prevUsersList) => {
       // it takes old data list
-      return [...prevUsersList, { name: uNmae, age: uAge, id:Math.random().toString() }];
+      return [...prevUsersList, { name: uNmae, age: uAge, college:uCollege, id:Math.random().toString() }];
     });
   };
 

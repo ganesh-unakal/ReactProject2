@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import classes from "./UserForm.module.css";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
@@ -7,32 +7,29 @@ import Wrapper from "../Helpers/Wrapper";
 
 
 const UserForm = (props) => {
-  //02) after passing function 'useState'
-  const [enteringNAme, userEnteredNAme] = useState("");
-  const [enteringAge, userEnteredAge] = useState("");
+
+  const nameInputRef=useRef();
+  const ageInputRef = useRef();
+  const collegeRef=useRef();
+ 
   //09)this is useed for when the user enterd emplty values then it works 
-  const [error, setError]=useState();
-
-  //01) first we create function then it passed into 'onChange'value
-  const UserNameHandler = (event) => {
-    userEnteredNAme(event.target.value);
-  };
-
-  const AgeHandler = (event) => {
-    userEnteredAge(event.target.value);
-  };
+  const [error, setError]=useState(); 
 
   //03) Submit handler function to submit the whole form bt creating object
   const submitHandler = (event) => {
     event.preventDefault();
+    const enteredName=nameInputRef.current.value
+    const enteredAge=ageInputRef.current.value
+    const enteredCollege=collegeRef.current.value
+
     //07) if the user ernters empty input then
-    if (enteringNAme.trim().length === 0 || enteringAge.trim().length === 0) {
+    if (enteredName.trim().length === 0 || enteredAge.trim().length === 0) {
       setError({
         title: 'Invalid input',
         message: 'Please enter a valid name and age (non-empty values)'})
       return;
     }
-    if (+enteringAge < 1) {
+    if (+enteredAge < 1) {
       setError({
         title: 'Invalid age',
         message: 'Please enter a valid age (> 0).'
@@ -40,10 +37,10 @@ const UserForm = (props) => {
       return;
     }
 
-    props.onAddUser(enteringNAme, enteringAge);  //09)console.log(enteringNAme, enteringAge);
-    //04)  2 way binding:- this for the website is that the input forms still hold onto the old value so the solution.
-    userEnteredNAme("");
-    userEnteredAge("");
+    props.onAddUser(enteredName, enteredAge ,enteredCollege);  //09)console.log(enteringNAme, enteringAge);
+    nameInputRef.current.value='';
+    ageInputRef.current.value='';
+    collegeRef.current.value='';
   };
 
   const errorHandler =()=>{
@@ -67,16 +64,21 @@ const UserForm = (props) => {
     <input
       id="username"
       type="text"
-      value={enteringNAme}
-      onChange={UserNameHandler}
+      ref={nameInputRef}
     />
 
     <label htmlFor="age">Age (Year)</label>
     <input
       id="age"
       type="number"
-      value={enteringAge}
-      onChange={AgeHandler}
+      ref={ageInputRef}
+    />
+
+    <label htmlFor="college">College Name</label>
+    <input 
+    id="college"
+    type='text'
+    ref={collegeRef}
     />
 
     {/*06) adding Custom component element valled 'Button' */}
